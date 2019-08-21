@@ -1,3 +1,3 @@
 function jup
-	conda activate corpuswork && cd ~/corpuswork/notebooks/ && jupyter notebook
+	conda activate corpuswork && cd ~/corpuswork/src/ && jupyter notebook
 end
