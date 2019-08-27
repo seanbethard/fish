@@ -69,10 +69,6 @@ function papple
 	/usr/bin/python  $argv;
 end
 
-function panaconda
-    $HOME/pkg/miniconda3/envs/corpuswork/bin/python $argv;
-end
-
 function e
 	/usr/local/bin/emacs $argv;
 end
