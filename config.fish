@@ -4,14 +4,17 @@
 
 echo -n Looking for worms... 
 
-set -U EDITOR /usr/local/bin/emacs
-
+set -gx PATH $HOME/anaconda3/bin $PATH
 set -gx PATH $HOME/.ghcup/env $PATH
 set -gx PATH $HOME/.local/bin $PATH
 set -gx PATH $HOME/.zef/bin $PATH
 set -gx PATH $HOME/.rakudobrew/bin $PATH
 set -gx PATH $HOME/rakudo/bin $PATH
 set -gx PATH $HOME/rakudo/share/perl6/site/bin $PATH
+
+set -gx ALTERNATE_EDITOR ""
+set -gx EDITOR "emacsclient -c"
+set -gx VISUAL "emacsclient -c -a emacs"
 
 echo 'Done'
 
@@ -57,27 +60,21 @@ function gofish
 	cd $HOME/.config/fish; s
 end
 
-function goschemas
-	cd $HOME/corpuswork/schemas; s
-end
-
 function jup
-	conda activate corpuswork; cd $HOME/corpuswork/schemas; jupyter notebook
+	conda activate corpuswork; cd $HOME/corpuswork; jupyter notebook
 end
 
 function papple
 	/usr/bin/python  $argv;
 end
 
-function e
-	/usr/local/bin/emacs $argv;
+source ~/.iterm2_shell_integration.fish
+function iterm2_print_user_vars
+  set -l git_branch (git branch ^/dev/null | sed -n '/\* /s///p')
+  iterm2_set_user_var gitBranch "$git_branch"
 end
 
-function s
-    git status
-end
-
-function fishrepo -d "Use a lure to fish a repo."
+function fishrepo -d "Nice and easy."
     getopts $argv | while read -l key value
         switch $key
             case l hostname
@@ -86,8 +83,8 @@ function fishrepo -d "Use a lure to fish a repo."
                 set name $value
             case r repository
                 set repo $value
-            case e eek
-                set eek $value
+            case e easy
+                set easy $value
             return
         end
     end
@@ -99,3 +96,8 @@ if not functions -q fisher
     curl https://git.io/fisher --create-dirs -sLo $XDG_CONFIG_HOME/fish/functions/fisher.fish
     fish -c fisher
 end
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+eval $HOME/anaconda3/bin/conda "shell.fish" "hook" $argv | source
+# <<< conda initialize <<<
